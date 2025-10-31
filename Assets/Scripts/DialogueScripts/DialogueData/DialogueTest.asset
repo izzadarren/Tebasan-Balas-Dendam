@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e03fb3d19d40d9419a9a9b258ae2ff7, type: 3}
+  m_Name: DialogueTest
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueObject
+  dialogue:
+  - 'assalamulaikum '
+  - 'Omg kok ganteng bgt
+
+'
+  - Pak Adhie ganteng
+  responses:
+  - responseText: Yes
+    dialogueObject: {fileID: 11400000, guid: 21fb67bb9a33aae4991da57e7af6cb77, type: 2}
+  - responseText: No
+    dialogueObject: {fileID: 11400000, guid: 3996aa37326686c4babb43c6da76dada, type: 2}
