@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private DialogueUI dialogueUI;
+
+    public DialogueUI DialogueUI => dialogueUI;
+    public IInteractable Interactable { get; set; }
 
     public float moveSpeed = 5f;
     public float collisionOffset = 0.05f;
@@ -25,39 +29,51 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
     }
-
+    void Update()
+    {
+        if (dialogueUI.IsOpen) return;
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log($"E pressed. Interactable={(Interactable != null ? Interactable.GetType().Name : "null")}, DialogueOpen={(dialogueUI != null ? dialogueUI.IsOpen.ToString() : "null")}");
+            // panggil interact hanya jika ada Interactable dan dialog belum terbuka
+            if (Interactable != null && (dialogueUI == null || !dialogueUI.IsOpen))
+            {
+                Interactable.Interact(this);
+            }
+        }
+    }
     // Update is called once per frame
     private void FixedUpdate()
     {
         if (CanMove)
         {
             if (movementInput != Vector2.zero)
-        {
-            bool success = TryMove(movementInput);
-            if (!success && movementInput.x > 0)
             {
-                success = TryMove(new Vector2(movementInput.x, 0));
-            }
-            if (!success && movementInput.y < 0)
+                bool success = TryMove(movementInput);
+                if (!success && movementInput.x > 0)
+                {
+                    success = TryMove(new Vector2(movementInput.x, 0));
+                }
+                if (!success && movementInput.y < 0)
                 {
                     success = TryMove(new Vector2(0, movementInput.y));
                 }
 
-            animator.SetBool("IsMoving", success);
-        }
-        else
-        {
-            animator.SetBool("IsMoving", false);
-        }
+                animator.SetBool("IsMoving", success);
+            }
+            else
+            {
+                animator.SetBool("IsMoving", false);
+            }
 
-        if (movementInput.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else if (movementInput.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
+            if (movementInput.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (movementInput.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
         }
         
         
