@@ -1,18 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour
 {
-    public int damage = 5;
+    // Variabel untuk menentukan jumlah damage yang diberikan ke player
+    public int damageAmount;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Method ini akan dipanggil saat enemy bertabrakan dengan objek lain yang memiliki Collider2D (dengan Trigger aktif)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        // Periksa apakah objek yang bertabrakan memiliki tag "Player"
+        if (collision.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            // Mencari komponen PlayerHealth pada objek yang bertabrakan
+            PlayerHealth player = collision.GetComponent<PlayerHealth>();
+
+            // Jika objek memiliki komponen PlayerHealth, berikan damage ke player
+            if (player != null)
             {
-                playerHealth.TakeDamage(damage);
+                player.TakeDamage(damageAmount); // Kurangi health player sesuai damageAmount
             }
         }
     }
 }
+

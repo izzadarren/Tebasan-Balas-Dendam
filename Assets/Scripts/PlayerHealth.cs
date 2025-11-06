@@ -1,24 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-
-    public int health;
+    [Header("Health Settings")]
     public int maxHealth = 100;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private int currentHealth = 100;
+
+    [Header("UI References")]
+    public Slider healthSlider; // Referensi ke UI Slider untuk Health Bar
+    public Image healthBarFill; // Opsional, kalau kamu mau tetap pakai Image Fill
+
+    private void Start()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
+        UpdateHealthUI();
     }
 
-    public void TakeDamage (int amount)
+    // Method untuk menerima damage
+    public void TakeDamage(int damage)
     {
-        health -= amount;
-        if (health < 0)
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        UpdateHealthUI();
+
+        if (currentHealth <= 0)
         {
-            Destroy(gameObject); 
+            Die();
         }
     }
-    // Update is called once per frame
 
+    // Method untuk memperbarui tampilan Health Bar
+    void UpdateHealthUI()
+    {
+        float fillAmount = (float)currentHealth / maxHealth;
+
+        // Kalau pakai Slider
+        if (healthSlider != null)
+        {
+            healthSlider.value = fillAmount; // value slider dari 0 - 1
+        }
+
+        // Kalau masih mau pakai Image Fill (opsional)
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = fillAmount; // gunakan fillAmount, bukan scale
+        }
+    }
+
+    // Method ketika Player mati
+    void Die()
+    {
+        Debug.Log("Player Mati!");
+        gameObject.SetActive(false);
+    }
 }
