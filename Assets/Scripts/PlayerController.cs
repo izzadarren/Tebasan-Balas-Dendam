@@ -21,6 +21,15 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Seconds between footstep sounds while moving")]
     [SerializeField] private float stepInterval = 0.35f;
 
+    [Header("Combat")]
+    [Tooltip("Enable/disable player's ability to attack")]
+    [SerializeField] private bool attackEnabled = true;
+    [Tooltip("If true use an Animator bool parameter for attack; otherwise use trigger 'swordAttack'")]
+    [SerializeField] private bool attackUsesBool = false;
+    [SerializeField] private string attackBoolName = "isAttacking";
+    [Tooltip("Fallback auto-end attack after this many seconds (0 = rely on animation event)")]
+    [SerializeField] private float attackDuration = 0f;
+
     Vector2 movementInput;
     Rigidbody2D rb;
     Animator animator;
@@ -33,6 +42,9 @@ public class PlayerController : MonoBehaviour
 
     // flag hasil movement di FixedUpdate untuk dipakai di Update
     private bool movedThisFixed = false;
+
+    // runtime
+    private bool isAttacking = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,8 +67,20 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        // if dialogue is open, stop movement but allow "skip" input
+        if (dialogueUI != null && dialogueUI.IsOpen)
+        {
+            movementInput = Vector2.zero;
+            movedThisFixed = false;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                dialogueUI.Skip();
+            }
+            return;
+        }
+
         // input / dialog handling (tetap di Update)
-        if (dialogueUI != null && dialogueUI.IsOpen) return;
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log($"E pressed. Interactable={(Interactable != null ? Interactable.GetType().Name : "null")}, DialogueOpen={(dialogueUI != null ? dialogueUI.IsOpen.ToString() : "null")}");
@@ -171,7 +195,50 @@ public class PlayerController : MonoBehaviour
     }
     void OnAttack()
     {
-        animator.SetTrigger("swordAttack");
+        // blocked if attack disabled, already attacking, can't move, or dialogue is open
+        if (!attackEnabled || isAttacking || !CanMove || (dialogueUI != null && dialogueUI.IsOpen) || animator == null)
+            return;
+
+        // start attack
+        LockMovement();
+        isAttacking = true;
+
+        if (attackUsesBool)
+            animator.SetBool(attackBoolName, true);
+        else
+            animator.SetTrigger("swordAttack");
+
+        if (attackDuration > 0f)
+            StartCoroutine(EndAttackAfter(attackDuration));
+    }
+
+    // call this from an Animation Event at the end of the attack clip
+    public void EndAttack()
+    {
+        if (attackUsesBool && animator != null)
+            animator.SetBool(attackBoolName, false);
+
+        isAttacking = false;
+        UnlockMovement();
+    }
+
+    private IEnumerator EndAttackAfter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        EndAttack();
+    }
+
+    // allow enabling/disabling attack at runtime
+    public void SetAttackEnabled(bool enabled)
+    {
+        attackEnabled = enabled;
+        if (!attackEnabled)
+        {
+            // ensure attack state cleared immediately if disabling
+            isAttacking = false;
+            if (attackUsesBool && animator != null)
+                animator.SetBool(attackBoolName, false);
+        }
     }
 
     public void LockMovement()
