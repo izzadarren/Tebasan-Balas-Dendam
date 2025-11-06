@@ -1,15 +1,15 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-
+using System;
+using UnityEngine.UI;
 public class TypeWritterEffects : MonoBehaviour
 {
     [SerializeField] private float typeWriteSpeeds = 50f; // Different speeds for typewriter effect 
-
-    // changed: return IEnumerator so caller (DialogueUI) can StartCoroutine and control it
-    public IEnumerator Run(string textToType, TMP_Text textLabel)
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Coroutine Run(string textToType, TMP_Text textLabel)
     {
-        return TypeText(textToType, textLabel);
+        return StartCoroutine(TypeText(textToType, textLabel));
     }
 
     private IEnumerator TypeText(string textToType, TMP_Text textLabel)
