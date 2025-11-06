@@ -13,18 +13,11 @@ MonoBehaviour:
   m_Name: DialogueTest
   m_EditorClassIdentifier: Assembly-CSharp::DialogueObject
   dialogue:
-  - 'Saya: Adek, kamu lihat Ibu nggak? Dari tadi aku cari, tapi nggak ketemu.'
-  - 'Adek: Ibu tadi pergi ke hutan, Kak. Katanya mau mencari tanaman herba.'
-  - 'Saya: Tanaman herba? Buat apa, dek?'
-  - 'Adek: Katanya buat obat. Ada orang di desa yang sakit, jadi Ibu mau bikin ramuan
-    dari daun itu.'
-  - 'Saya: Oh begitu... semoga Ibu cepat pulang dan nggak kenapa-kenapa di hutan.'
-  - 'Adek: Iya, Kak. Ibu pasti baik-baik saja.'
-  - (Hening sejenak, suasana jadi tenang.)
-  - 'Saya: Daripada kita bengong terus, gimana kalau kita main sebentar?'
-  - 'Adek: Main? Boleh! Main petak umpet, ya?'
-  - 'Saya: Haha, boleh. Tapi kali ini, Adek yang jaga dulu!'
-  - 'Adek: Ih, Kak curang! Tapi yaudah deh. Satu... dua... tiga...!'
+  - 'assalamulaikum '
+  - 'Omg kok ganteng bgt
+
+'
+  - Pak Adhie ganteng
   responses:
   - responseText: Yes
     dialogueObject: {fileID: 11400000, guid: 21fb67bb9a33aae4991da57e7af6cb77, type: 2}

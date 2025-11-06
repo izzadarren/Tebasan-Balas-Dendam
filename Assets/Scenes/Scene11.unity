@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8eca9bb8df695c499d00b357e6bc048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelMove
-  sceneBuildIndex: 2
+  sceneBuildIndex: 4
 --- !u!1 &138259214
 GameObject:
   m_ObjectHideFlags: 0
@@ -14996,7 +14996,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 14ad2da6fe830f84690f62df95503ff6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -19975,7 +19975,7 @@ Transform:
   m_GameObject: {fileID: 1496949766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.968664, y: 6.65767, z: -1}
+  m_LocalPosition: {x: 8.975127, y: 6.65766, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20339,7 +20339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8eca9bb8df695c499d00b357e6bc048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelMove
-  sceneBuildIndex: 3
+  sceneBuildIndex: 2
 --- !u!61 &2134964428
 BoxCollider2D:
   m_ObjectHideFlags: 0

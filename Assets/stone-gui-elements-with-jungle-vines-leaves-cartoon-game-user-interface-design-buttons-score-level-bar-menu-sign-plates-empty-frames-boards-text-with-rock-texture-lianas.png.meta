@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: 64f00fedb5e7ee04896521ee89626531
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7886517660793117699
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_0
+  - first:
+      213: 1684836710872096400
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_1
+  - first:
+      213: -1587366128405893042
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_2
+  - first:
+      213: 8204041406675199099
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_3
+  - first:
+      213: -6371574522398817889
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_4
+  - first:
+      213: 6635195463794076099
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_5
+  - first:
+      213: 9182620925945525010
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_6
+  - first:
+      213: -4077079033190392276
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_7
+  - first:
+      213: -2364975593608450722
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_8
+  - first:
+      213: -5068185502605920254
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_9
+  - first:
+      213: -761877386531775596
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_10
+  - first:
+      213: 6148474640738777318
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_11
+  - first:
+      213: -1232612230652711337
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_12
+  - first:
+      213: 7583428644667586615
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_13
+  - first:
+      213: 6466124247131964169
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_14
+  - first:
+      213: 2397668167020770335
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_15
+  - first:
+      213: -8402573334506283307
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_16
+  - first:
+      213: -789077554581875886
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_17
+  - first:
+      213: -1855295104814612625
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_18
+  - first:
+      213: 3181383890977217044
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_19
+  - first:
+      213: 7545424189486275973
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_20
+  - first:
+      213: -1546095655254582759
+    second: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_0
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 826
+        width: 303
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30c1b66270a827d60800000000000000
+      internalID: 7886517660793117699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_1
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 784
+        width: 302
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09e9118df0eb16710800000000000000
+      internalID: 1684836710872096400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_2
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 826
+        width: 305
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4031eb9aea88f9e0800000000000000
+      internalID: -1587366128405893042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_3
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 811
+        width: 345
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b74a877413c9ad170800000000000000
+      internalID: 8204041406675199099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_4
+      rect:
+        serializedVersion: 2
+        x: 1527
+        y: 822
+        width: 348
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f914d7cdabe9397a0800000000000000
+      internalID: -6371574522398817889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_5
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 425
+        width: 571
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c9aaba9e13f41c50800000000000000
+      internalID: 6635195463794076099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_6
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 415
+        width: 534
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2133d0e94193f6f70800000000000000
+      internalID: 9182620925945525010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_7
+      rect:
+        serializedVersion: 2
+        x: 1355
+        y: 384
+        width: 519
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2e5e79783e4b67c0800000000000000
+      internalID: -4077079033190392276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_8
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 574
+        width: 515
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5def705a3bed2fd0800000000000000
+      internalID: -2364975593608450722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_9
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 242
+        width: 103
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 208b36543203aa9b0800000000000000
+      internalID: -5068185502605920254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_10
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 242
+        width: 48
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49bde55bd844d65f0800000000000000
+      internalID: -761877386531775596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_11
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 241
+        width: 52
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e87bb71c15c35550800000000000000
+      internalID: 6148474640738777318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_12
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 241
+        width: 117
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75ea426f4b1e4eee0800000000000000
+      internalID: -1232612230652711337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_13
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 232
+        width: 140
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 738fee07c20cd3960800000000000000
+      internalID: 7583428644667586615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_14
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 241
+        width: 116
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90347d76eb94cb950800000000000000
+      internalID: 6466124247131964169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_15
+      rect:
+        serializedVersion: 2
+        x: 997
+        y: 242
+        width: 116
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f14f8889e7a364120800000000000000
+      internalID: 2397668167020770335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_16
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 243
+        width: 124
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5de559d2210146b80800000000000000
+      internalID: -8402573334506283307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_17
+      rect:
+        serializedVersion: 2
+        x: 1353
+        y: 242
+        width: 114
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 253d9e21522ac05f0800000000000000
+      internalID: -789077554581875886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_18
+      rect:
+        serializedVersion: 2
+        x: 1525
+        y: 242
+        width: 146
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6ff0049eeaa046e0800000000000000
+      internalID: -1855295104814612625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_19
+      rect:
+        serializedVersion: 2
+        x: 1729
+        y: 243
+        width: 146
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ad8db0bcb862c20800000000000000
+      internalID: 3181383890977217044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_20
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 40
+        width: 849
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58d18fda25bb6b860800000000000000
+      internalID: 7545424189486275973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_21
+      rect:
+        serializedVersion: 2
+        x: 1025
+        y: 46
+        width: 850
+        height: 136
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a96cf613a2b8ae0800000000000000
+      internalID: -1546095655254582759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_0: 7886517660793117699
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_1: 1684836710872096400
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_10: -761877386531775596
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_11: 6148474640738777318
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_12: -1232612230652711337
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_13: 7583428644667586615
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_14: 6466124247131964169
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_15: 2397668167020770335
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_16: -8402573334506283307
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_17: -789077554581875886
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_18: -1855295104814612625
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_19: 3181383890977217044
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_2: -1587366128405893042
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_20: 7545424189486275973
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_21: -1546095655254582759
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_3: 8204041406675199099
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_4: -6371574522398817889
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_5: 6635195463794076099
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_6: 9182620925945525010
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_7: -4077079033190392276
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_8: -2364975593608450722
+      stone-gui-elements-with-jungle-vines-leaves-cartoon-game-user-interface-design-buttons-score-level-bar-menu-sign-plates-empty-frames-boards-text-with-rock-texture-lianas_9: -5068185502605920254
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
