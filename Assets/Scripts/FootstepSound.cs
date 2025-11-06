@@ -16,9 +16,9 @@ void Start()
 void Update()
 {
     x = Input.GetAxis("Horizontal") * speed;
-    rb2D.velocity = new Vector2(x, rb2D.velocity.y);
+    rb2D.linearVelocity = new Vector2(x, rb2D.linearVelocity.y);
     
-    if (rb2D.velocity.x != 0)
+    if (rb2D.linearVelocity.x != 0)
     {
         if (!audioSource.isPlaying)
         {
