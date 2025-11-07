@@ -15,21 +15,38 @@ public class EnemyPatrol2D : MonoBehaviour
     public float chaseSpeed = 3f;
     public float attackCooldown = 1.5f;
 
+    [Header("Combat")]
+    [Tooltip("Damage dealt to player each attack tick")]
+    public int damagePerTick = 1;
+
     private int currentIndex = 0;
     private Rigidbody2D rb;
     private float lastAttackTime;
     private bool isPlayerDetected;
+
+    // cached PlayerHealth reference for continuous damage
+    private PlayerHealth playerHealth;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
+
+        // try to resolve player and PlayerHealth if not assigned in inspector
+        if (player == null)
+        {
+            var pgo = GameObject.FindWithTag("Player");
+            if (pgo != null) player = pgo.transform;
+        }
+
+        if (player != null)
+            playerHealth = player.GetComponent<PlayerHealth>();
     }
 
     void FixedUpdate()
     {
-        if (player == null) 
+        if (player == null)
         {
             Patrol();
             return;
@@ -58,6 +75,7 @@ public class EnemyPatrol2D : MonoBehaviour
         Vector2 targetPos = waypoints[currentIndex].position;
         Vector2 direction = (targetPos - rb.position).normalized;
 
+        // use linearVelocity instead of deprecated velocity
         rb.linearVelocity = direction * patrolSpeed;
 
         float distance = Vector2.Distance(rb.position, targetPos);
@@ -70,18 +88,36 @@ public class EnemyPatrol2D : MonoBehaviour
     void ChasePlayer()
     {
         Vector2 direction = (player.position - transform.position).normalized;
+        // use linearVelocity instead of deprecated velocity
         rb.linearVelocity = direction * chaseSpeed;
     }
 
     void AttackPlayer()
     {
-        rb.linearVelocity = Vector2.zero; // berhenti saat menyerang
+        // berhenti saat menyerang
+        // use linearVelocity to stop
+        rb.linearVelocity = Vector2.zero;
 
         if (Time.time - lastAttackTime >= attackCooldown)
         {
             lastAttackTime = Time.time;
             Debug.Log("Enemy menyerang player!");
-            // TODO: Tambahkan animasi atau logika damage ke player di sini
+
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damagePerTick);
+            }
+            else
+            {
+                var ph = player.GetComponent<PlayerHealth>();
+                if (ph != null)
+                {
+                    playerHealth = ph;
+                    playerHealth.TakeDamage(damagePerTick);
+                }
+            }
+
+            // TODO: tambahkan animasi serang di sini jika perlu
         }
     }
 

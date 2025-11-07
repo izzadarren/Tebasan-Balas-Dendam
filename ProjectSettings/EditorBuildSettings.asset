@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/House.unity
     guid: 07aee1a3a7893b44c960570830d7b023
+  - enabled: 1
+    path: Assets/Scenes/CutsceneZombie1.unity
+    guid: 424b35fb878938e45a140a601886cd3d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   m_UseUCBPForAssetBundles: 0

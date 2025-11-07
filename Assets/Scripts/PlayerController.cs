@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
 
-    // FOOTSTEP: assign an AudioClip in Inspector; an AudioSource will be created automatically if none assigned
     [Header("Footstep Sound")]
     [SerializeField] private AudioClip footstepClip;
     [SerializeField] private AudioSource footstepSource;
@@ -29,6 +28,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string attackBoolName = "isAttacking";
     [Tooltip("Fallback auto-end attack after this many seconds (0 = rely on animation event)")]
     [SerializeField] private float attackDuration = 0f;
+    [Tooltip("When attackDuration == 0 use this fallback to guarantee EndAttack is called")]
+    [SerializeField] private float attackFallbackSeconds = 0.5f;
 
     Vector2 movementInput;
     Rigidbody2D rb;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     // runtime
     private bool isAttacking = false;
+    private Coroutine attackMonitorCoroutine; // added
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,17 +56,15 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         // ensure we have an AudioSource to play footsteps
-        if (footstepSource == null)
+        if (footstepSource == null && footstepClip != null)
         {
-            if (footstepClip != null)
-            {
-                footstepSource = gameObject.AddComponent<AudioSource>();
-                footstepSource.playOnAwake = false;
-                footstepSource.clip = footstepClip;
-                footstepSource.loop = false;
-            }
+            footstepSource = gameObject.AddComponent<AudioSource>();
+            footstepSource.playOnAwake = false;
+            footstepSource.clip = footstepClip;
+            footstepSource.loop = false;
         }
     }
+
     void Update()
     {
         // if dialogue is open, stop movement but allow "skip" input
@@ -80,17 +80,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // input / dialog handling (tetap di Update)
+        // interact / dialog input
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log($"E pressed. Interactable={(Interactable != null ? Interactable.GetType().Name : "null")}, DialogueOpen={(dialogueUI != null ? dialogueUI.IsOpen.ToString() : "null")}");
             if (Interactable != null && (dialogueUI == null || !dialogueUI.IsOpen))
             {
                 Interactable.Interact(this);
             }
         }
 
-        // gunakan movedThisFixed hasil FixedUpdate untuk set animator dan footsteps secara responsif
         bool isMoving = CanMove && movedThisFixed;
 
         if (animator != null)
@@ -98,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
         HandleFootstepsUpdate(isMoving, Time.deltaTime);
 
-        // flip sprite responsive di Update (no physics)
+        // flip sprite responsive in Update
         if (movementInput.x < 0)
             spriteRenderer.flipX = true;
         else if (movementInput.x > 0)
@@ -107,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movedThisFixed = false; // reset sebelum cek
+        movedThisFixed = false;
 
         if (!CanMove || rb == null) return;
 
@@ -115,15 +113,10 @@ public class PlayerController : MonoBehaviour
         {
             bool success = TryMove(movementInput);
             if (!success && movementInput.x != 0)
-            {
                 success = TryMove(new Vector2(movementInput.x, 0));
-            }
             if (!success && movementInput.y != 0)
-            {
                 success = TryMove(new Vector2(0, movementInput.y));
-            }
 
-            // simpan hasil agar Update bisa membaca segera
             movedThisFixed = success;
         }
         else
@@ -132,7 +125,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ganti HandleFootsteps supaya menerima deltaTime dari Update dan bisa Stop() saat berhenti
     private void HandleFootstepsUpdate(bool isMoving, float deltaTime)
     {
         if (footstepClip == null || footstepSource == null) return;
@@ -142,12 +134,8 @@ public class PlayerController : MonoBehaviour
             stepTimer += deltaTime;
             if (stepTimer >= stepInterval)
             {
-                // prevent overlapping playback
                 if (!footstepSource.isPlaying)
-                {
                     footstepSource.PlayOneShot(footstepClip);
-                    // Debug.Log("Footstep played");
-                }
                 stepTimer = 0f;
             }
         }
@@ -161,45 +149,33 @@ public class PlayerController : MonoBehaviour
 
     private bool TryMove(Vector2 direction)
     {
-        if (direction != Vector2.zero)
-        {
+        if (direction == Vector2.zero) return false;
 
-            int count = rb.Cast(
-                    direction,
-                    movementFilter,
-                    castCollisions,
-                    moveSpeed * Time.fixedDeltaTime + collisionOffset);
-            if (count == 0)
-            {
-                rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime
-                );
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        } 
-        else
+        int count = rb.Cast(
+            direction,
+            movementFilter,
+            castCollisions,
+            moveSpeed * Time.fixedDeltaTime + collisionOffset);
+
+        if (count == 0)
         {
-            return false;
+            rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+            return true;
         }
-
+        return false;
     }
-
 
     void OnMove(InputValue movementValue)
     {
+        // ensure this matches your InputAction name and PlayerInput behavior
         movementInput = movementValue.Get<Vector2>();
-
     }
+
     void OnAttack()
     {
-        // blocked if attack disabled, already attacking, can't move, or dialogue is open
         if (!attackEnabled || isAttacking || !CanMove || (dialogueUI != null && dialogueUI.IsOpen) || animator == null)
             return;
 
-        // start attack
         LockMovement();
         isAttacking = true;
 
@@ -208,13 +184,22 @@ public class PlayerController : MonoBehaviour
         else
             animator.SetTrigger("swordAttack");
 
-        if (attackDuration > 0f)
-            StartCoroutine(EndAttackAfter(attackDuration));
+        // guarantee EndAttack will be called: use attackDuration if set, otherwise fallback
+        float wait = (attackDuration > 0f) ? attackDuration : attackFallbackSeconds;
+
+        if (attackMonitorCoroutine != null) StopCoroutine(attackMonitorCoroutine);
+        attackMonitorCoroutine = StartCoroutine(EndAttackAfter(wait));
     }
 
-    // call this from an Animation Event at the end of the attack clip
+    // call this from an Animation Event at the end of the attack clip (recommended)
     public void EndAttack()
     {
+        if (attackMonitorCoroutine != null)
+        {
+            StopCoroutine(attackMonitorCoroutine);
+            attackMonitorCoroutine = null;
+        }
+
         if (attackUsesBool && animator != null)
             animator.SetBool(attackBoolName, false);
 
@@ -228,13 +213,35 @@ public class PlayerController : MonoBehaviour
         EndAttack();
     }
 
+    private IEnumerator WaitForAttackAnimationEnd(float timeout)
+    {
+        float t = 0f;
+        yield return null;
+        while (t < timeout)
+        {
+            if (!IsPlayingAttackClip())
+                break;
+            t += Time.deltaTime;
+            yield return null;
+        }
+        EndAttack();
+    }
+
+    private bool IsPlayingAttackClip()
+    {
+        if (animator == null || animator.runtimeAnimatorController == null) return false;
+        var clips = animator.GetCurrentAnimatorClipInfo(0);
+        if (clips == null || clips.Length == 0) return false;
+        var name = clips[0].clip.name.ToLower();
+        return name.Contains("attack") || name.Contains("sword");
+    }
+
     // allow enabling/disabling attack at runtime
     public void SetAttackEnabled(bool enabled)
     {
         attackEnabled = enabled;
         if (!attackEnabled)
         {
-            // ensure attack state cleared immediately if disabling
             isAttacking = false;
             if (attackUsesBool && animator != null)
                 animator.SetBool(attackBoolName, false);
@@ -245,8 +252,14 @@ public class PlayerController : MonoBehaviour
     {
         CanMove = false;
     }
-       public void UnlockMovement()
+    public void UnlockMovement()
     {
         CanMove = true;
+    }
+
+    private void OnDisable()
+    {
+        // safety: ensure player not left permanently locked
+        EndAttack();
     }
 }
