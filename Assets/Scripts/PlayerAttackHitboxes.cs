@@ -39,6 +39,8 @@ public class PlayerAttackHitboxes : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("🌀 Update berjalan");
+
         if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
             // Pastikan objek valid
