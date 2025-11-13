@@ -1,265 +1,363 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private DialogueUI dialogueUI;
+    private const string PARAM_MOVE_X = "MoveX";
+    private const string PARAM_MOVE_Y = "MoveY";
+    private const string PARAM_IS_MOVING = "isMoving";
+    private const string PARAM_ATTACK = "Attack";
+    private const string PARAM_ATTACK_DIR = "AttackDirection";
 
-    public DialogueUI DialogueUI => dialogueUI;
-    public IInteractable Interactable { get; set; }
-
+    [Header("Movement")]
     public float moveSpeed = 5f;
-    public float collisionOffset = 0.05f;
-    public ContactFilter2D movementFilter;
-
-    [Header("Footstep Sound")]
-    [SerializeField] private AudioClip footstepClip;
-    [SerializeField] private AudioSource footstepSource;
-    [Tooltip("Seconds between footstep sounds while moving")]
-    [SerializeField] private float stepInterval = 0.35f;
-
-    [Header("Combat")]
-    [Tooltip("Enable/disable player's ability to attack")]
-    [SerializeField] private bool attackEnabled = true;
-    [Tooltip("If true use an Animator bool parameter for attack; otherwise use trigger 'swordAttack'")]
-    [SerializeField] private bool attackUsesBool = false;
-    [SerializeField] private string attackBoolName = "isAttacking";
-    [Tooltip("Fallback auto-end attack after this many seconds (0 = rely on animation event)")]
-    [SerializeField] private float attackDuration = 0f;
-    [Tooltip("When attackDuration == 0 use this fallback to guarantee EndAttack is called")]
-    [SerializeField] private float attackFallbackSeconds = 0.5f;
-
-    Vector2 movementInput;
-    Rigidbody2D rb;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-    List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     public bool CanMove = true;
 
-    // internal timer for footsteps
-    private float stepTimer = 0f;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private Vector2 movementInput;
+    private Vector2 lastMoveDirection = Vector2.down; // default menghadap bawah
 
-    // flag hasil movement di FixedUpdate untuk dipakai di Update
-    private bool movedThisFixed = false;
+    // external interaction point (restores API yang DialogueActivator dipanggil)
+    public IInteractable Interactable { get; set; }
 
-    // runtime
+    [Header("Combat")]
+    [SerializeField] private PlayerAttackHitboxes attackHitboxes;
+    [SerializeField] private bool attackEnabled = true;
+    [SerializeField] private float attackDuration = 0.3f;
+    [SerializeField] private DialogueUI dialogueUI;
+    public DialogueUI DialogueUI => dialogueUI;
+
+    [Header("Audio")]
+    [Tooltip("Footstep clips - one will be chosen when starting to walk")]
+    [SerializeField] private AudioClip[] footstepClips;
+    [Tooltip("Optional: use a single clip for continuous loop (preferred)")]
+    [SerializeField] private AudioClip footstepLoopClip;
+    [SerializeField] private float footstepVolume = 0.6f;
+    [SerializeField] private bool loopFootsteps = true; // loop while walking
+    [Tooltip("Optional: assign a dedicated AudioSource for footsteps (recommended). If empty a child AudioSource will be created.")]
+    [SerializeField] private AudioSource footstepSource;
+
     private bool isAttacking = false;
-    private Coroutine attackMonitorCoroutine; // added
+    private Coroutine attackCoroutine;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // --- new fields for immediate walk switching ---
+    private int prevMoveDir = -1;
+    private static readonly int HASH_WALK_DOWN = Animator.StringToHash("player_walkdown");
+    private static readonly int HASH_WALK_UP = Animator.StringToHash("player_walkup");
+    private static readonly int HASH_WALK_RIGHT = Animator.StringToHash("player_walkright");
+    private static readonly int HASH_WALK_LEFT = Animator.StringToHash("player_walkleft");
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // ensure we have an AudioSource to play footsteps
-        if (footstepSource == null && footstepClip != null)
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+        // setup footstep audio source (use inspector slot if provided, otherwise create a child source)
+        if (footstepSource == null)
         {
-            footstepSource = gameObject.AddComponent<AudioSource>();
-            footstepSource.playOnAwake = false;
-            footstepSource.clip = footstepClip;
-            footstepSource.loop = false;
+            var go = new GameObject("FootstepSource");
+            go.transform.SetParent(transform);
+            go.transform.localPosition = Vector3.zero;
+            footstepSource = go.AddComponent<AudioSource>();
         }
+        footstepSource.playOnAwake = false;
+        footstepSource.loop = true;
+        footstepSource.volume = footstepVolume;
+        // prefer explicit loop clip, otherwise fall back to first array element
+        if (footstepLoopClip != null)
+            footstepSource.clip = footstepLoopClip;
+        else if (footstepClips != null && footstepClips.Length > 0)
+            footstepSource.clip = footstepClips[0];
+        if (footstepSource.isPlaying) footstepSource.Stop();
+
+        // quick bind check
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+            Debug.Log("[PlayerController] Animator bound. controller=" + (animator.runtimeAnimatorController != null));
+        }
+
+        // --- physics sanity checks / auto-fix (logging) ---
+        if (rb == null)
+        {
+            Debug.LogWarning("[PlayerController] Rigidbody2D not found on Player.");
+        }
+        else
+        {
+            Debug.Log($"[PlayerController] Rigidbody2D bodyType={rb.bodyType} collisionDetection={rb.collisionDetectionMode} gravity={rb.gravityScale}");
+            // optional: enforce Dynamic + continuous collision for fast movement
+            if (rb.bodyType != RigidbodyType2D.Dynamic)
+            {
+                Debug.LogWarning("[PlayerController] Rigidbody2D is not Dynamic. Changing to Dynamic for normal collisions.");
+                rb.bodyType = RigidbodyType2D.Dynamic;
+            }
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+
+        var col = GetComponent<Collider2D>();
+        if (col == null)
+            Debug.LogWarning("[PlayerController] Collider2D not found on Player.");
+        else
+        {
+            Debug.Log($"[PlayerController] Collider2D found. isTrigger={col.isTrigger} usedByComposite={(col is CompositeCollider2D)}");
+            if (col.isTrigger)
+                Debug.LogWarning("[PlayerController] Player collider is set as Trigger — collisions won't block movement.");
+        }
+    }
+
+    // debug collision callbacks to verify what collides
+    private void OnCollisionEnter2D(Collision2D c)
+    {
+        Debug.Log($"[PlayerController] OnCollisionEnter2D with '{c.collider.name}' layer={LayerMask.LayerToName(c.collider.gameObject.layer)}");
+    }
+
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        Debug.Log($"[PlayerController] OnTriggerEnter2D with '{c.name}' layer={LayerMask.LayerToName(c.gameObject.layer)} (player collider may be Trigger)");
     }
 
     void Update()
     {
-        // if dialogue is open, stop movement but allow "skip" input
-        if (dialogueUI != null && dialogueUI.IsOpen)
-        {
-            movementInput = Vector2.zero;
-            movedThisFixed = false;
+        // read input (kamu masih bisa pake PlayerInput/OnMove jika aktif)
+        movementInput.x = Input.GetAxisRaw("Horizontal");
+        movementInput.y = Input.GetAxisRaw("Vertical");
+        // determine whether should play footsteps
+        bool shouldPlayFootsteps = movementInput.sqrMagnitude > 0.01f && CanMove && !isAttacking;
+        HandleFootsteps(shouldPlayFootsteps);
+        
+        // animator hanya peduli apakah ada input bergerak (jangan ikat ke isAttacking)
+        bool animatorIsMoving = movementInput.sqrMagnitude > 0.01f;
+        if (animatorIsMoving)
+            lastMoveDirection = movementInput.normalized;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+        // send animator params (isMoving untuk transisi animasi WALK)
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_IS_MOVING, animatorIsMoving);
+            animator.SetFloat(PARAM_MOVE_X, lastMoveDirection.x);
+            animator.SetFloat(PARAM_MOVE_Y, lastMoveDirection.y);
+
+            // determine integer direction for state machine (0=down,1=up,2=right,3=left)
+            int moveDir;
+            if (Mathf.Abs(lastMoveDirection.x) > Mathf.Abs(lastMoveDirection.y))
+                moveDir = lastMoveDirection.x > 0 ? 2 : 3;
+            else
+                moveDir = lastMoveDirection.y > 0 ? 1 : 0;
+            animator.SetInteger("MoveDir", moveDir);
+
+            // hitung Direction (1=Left,2=Right,3=Up,4=Down)
+            Vector2 dir = lastMoveDirection;
+            int direction;
+            if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+                direction = dir.x > 0 ? 2 : 1; // kanan=2, kiri=1
+            else
+                direction = dir.y > 0 ? 3 : 4; // atas=3, bawah=4
+            animator.SetInteger("Direction", direction);
+            animator.SetBool("isMoving", movementInput.sqrMagnitude > 0.01f);
+
+            if (HasAnimatorParameter(animator, "Blend"))
+                animator.SetFloat("Blend", lastMoveDirection.x);
+
+            // immediate state switch when direction changes while walking (but not while attacking)
+            if (animatorIsMoving && !isAttacking && moveDir != prevMoveDir)
             {
-                dialogueUI.Skip();
+                int targetHash = HASH_WALK_DOWN;
+                switch (moveDir)
+                {
+                    case 0: targetHash = HASH_WALK_DOWN; break;
+                    case 1: targetHash = HASH_WALK_UP; break;
+                    case 2: targetHash = HASH_WALK_RIGHT; break;
+                    case 3: targetHash = HASH_WALK_LEFT; break;
+                }
+
+                // crossfade with zero duration forces instant change between walk states
+                animator.CrossFade(targetHash, 0f, 0, 0f);
+                prevMoveDir = moveDir;
             }
-            return;
+
+            // reset prevMoveDir when stopped so next start will force state
+            if (!animatorIsMoving) prevMoveDir = -1;
         }
 
-        // interact / dialog input
+        // actual movement only allowed when not attacking and movement is enabled
+        // (movement performed in FixedUpdate to keep physics stable)
+        // attack input
+        if (Input.GetMouseButtonDown(0))
+            OnAttack();
+
+        // interaction: tekan 'E' untuk interaksi / memunculkan dialog
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (Interactable != null && (dialogueUI == null || !dialogueUI.IsOpen))
+            if (Interactable != null)
             {
+                // call Interact with the player so DialogueActivator can show dialogue
                 Interactable.Interact(this);
             }
-        }
-
-        bool isMoving = CanMove && movedThisFixed;
-
-        if (animator != null)
-            animator.SetBool("IsMoving", isMoving);
-
-        HandleFootstepsUpdate(isMoving, Time.deltaTime);
-
-        // flip sprite responsive in Update
-        if (movementInput.x < 0)
-            spriteRenderer.flipX = true;
-        else if (movementInput.x > 0)
-            spriteRenderer.flipX = false;
-    }
-
-    private void FixedUpdate()
-    {
-        movedThisFixed = false;
-
-        if (!CanMove || rb == null) return;
-
-        if (movementInput != Vector2.zero)
-        {
-            bool success = TryMove(movementInput);
-            if (!success && movementInput.x != 0)
-                success = TryMove(new Vector2(movementInput.x, 0));
-            if (!success && movementInput.y != 0)
-                success = TryMove(new Vector2(0, movementInput.y));
-
-            movedThisFixed = success;
-        }
-        else
-        {
-            movedThisFixed = false;
-        }
-    }
-
-    private void HandleFootstepsUpdate(bool isMoving, float deltaTime)
-    {
-        if (footstepClip == null || footstepSource == null) return;
-
-        if (isMoving)
-        {
-            stepTimer += deltaTime;
-            if (stepTimer >= stepInterval)
+            else if (dialogueUI != null)
             {
-                if (!footstepSource.isPlaying)
-                    footstepSource.PlayOneShot(footstepClip);
-                stepTimer = 0f;
+                // fallback: try to open dialogue UI via SendMessage if available
+                dialogueUI.gameObject.SendMessage("OpenDialogue", SendMessageOptions.DontRequireReceiver);
             }
         }
+
+        // debug singkat (hapus saat sudah ok)
+        if (Time.frameCount % 120 == 0) // log tiap ~2 detik untuk tidak spam console
+        {
+            Debug.Log($"[PlayerController] isAttacking={isAttacking} animatorIsMoving={animatorIsMoving} moveInput={movementInput} lastDir={lastMoveDirection}");
+            if (animator != null)
+            {
+                var st = animator.GetCurrentAnimatorStateInfo(0);
+                Debug.Log($"[Animator] stateHash={st.shortNameHash} inTransition={animator.IsInTransition(0)}");
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        // compute expected velocity from input (same logic you already use)
+        Vector2 expectedVelocity = Vector2.zero;
+        if (CanMove && !isAttacking && movementInput != Vector2.zero)
+            expectedVelocity = movementInput.normalized * moveSpeed;
+
+        // if you use MovePosition as before, keep MovePosition for expected movement
+        if (expectedVelocity != Vector2.zero)
+        {
+            rb.MovePosition(rb.position + expectedVelocity * Time.fixedDeltaTime);
+        }
+
+        // --- protection: detect external/vertical pull and clamp ---
+        Vector2 actualVel = rb.linearVelocity;
+        float diff = (actualVel - expectedVelocity).magnitude;
+
+        // threshold tweakable: if external influence larger than expected, log & correct
+        const float EXTERNAL_PULL_THRESHOLD = 0.5f;
+        if (diff > EXTERNAL_PULL_THRESHOLD && expectedVelocity.magnitude < 0.01f)
+        {
+            Debug.LogWarning($"[PlayerController] Unexpected external velocity detected. actual={actualVel} expected={expectedVelocity} pos={rb.position}");
+            // optional: reset velocity to zero to stop pulling
+            rb.linearVelocity = Vector2.zero;
+
+            // also unparent if some code parented the player unexpectedly
+            if (transform.parent != null)
+            {
+                Debug.LogWarning($"[PlayerController] Removing unexpected parent '{transform.parent.name}'");
+                transform.SetParent(null);
+            }
+        }
+        else if (diff > EXTERNAL_PULL_THRESHOLD)
+        {
+            Debug.LogWarning($"[PlayerController] External force while moving. actual={actualVel} expected={expectedVelocity}");
+            // align velocity to expected to avoid being wrestled by other forces
+            rb.linearVelocity = expectedVelocity;
+        }
+
+        // existing debug (optional)
+        if (Time.frameCount % 120 == 0)
+            Debug.Log($"[PlayerController] rb.gravityScale={rb.gravityScale} rb.bodyType={rb.bodyType} rb.velocity={rb.linearVelocity}");
+    }
+
+    void OnAttack()
+    {
+        if (!attackEnabled || isAttacking) return;
+        isAttacking = true;
+
+        if (attackHitboxes != null)
+            attackHitboxes.SetAttackDirection(lastMoveDirection);
+
+        int attackDir = 0;
+        if (Mathf.Abs(lastMoveDirection.x) > Mathf.Abs(lastMoveDirection.y))
+            attackDir = lastMoveDirection.x > 0 ? 1 : 2; // 1 = kanan, 2 = kiri
+        else
+            attackDir = lastMoveDirection.y > 0 ? 3 : 4; // 3 = atas, 4 = bawah
+
+        if (animator != null)
+        {
+            animator.SetInteger(PARAM_ATTACK_DIR, attackDir);
+            if (HasAnimatorParameter(animator, PARAM_ATTACK))
+            {
+                animator.SetTrigger(PARAM_ATTACK);
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerController] Animator missing Trigger '" + PARAM_ATTACK + "'");
+            }
+        }
+
+        if (attackCoroutine != null)
+            StopCoroutine(attackCoroutine);
+        attackCoroutine = StartCoroutine(AttackDelay(attackDuration));
+    }
+
+    private IEnumerator AttackDelay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isAttacking = false;
+    }
+
+    private void HandleFootsteps(bool play)
+    {
+        // guard: need a valid source and clip
+        if (footstepSource == null || footstepSource.clip == null) return;
+
+        // never play footsteps while attacking or movement locked
+        if (isAttacking || !CanMove) play = false;
+
+        if (play)
+        {
+            if (!footstepSource.isPlaying)
+                footstepSource.Play();
+        }
         else
         {
-            stepTimer = 0f;
             if (footstepSource.isPlaying)
                 footstepSource.Stop();
         }
     }
 
-    private bool TryMove(Vector2 direction)
+    private bool HasAnimatorParameter(Animator animator, string paramName)
     {
-        if (direction == Vector2.zero) return false;
-
-        int count = rb.Cast(
-            direction,
-            movementFilter,
-            castCollisions,
-            moveSpeed * Time.fixedDeltaTime + collisionOffset);
-
-        if (count == 0)
+        // check using AnimatorControllerParameter (more reliable)
+        foreach (var p in animator.parameters)
         {
-            rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
-            return true;
+            if (p.name == paramName)
+                return true;
         }
+
         return false;
     }
 
-    void OnMove(InputValue movementValue)
-    {
-        // ensure this matches your InputAction name and PlayerInput behavior
-        movementInput = movementValue.Get<Vector2>();
-    }
-
-    void OnAttack()
-    {
-        if (!attackEnabled || isAttacking || !CanMove || (dialogueUI != null && dialogueUI.IsOpen) || animator == null)
-            return;
-
-        LockMovement();
-        isAttacking = true;
-
-        if (attackUsesBool)
-            animator.SetBool(attackBoolName, true);
-        else
-            animator.SetTrigger("swordAttack");
-
-        // guarantee EndAttack will be called: use attackDuration if set, otherwise fallback
-        float wait = (attackDuration > 0f) ? attackDuration : attackFallbackSeconds;
-
-        if (attackMonitorCoroutine != null) StopCoroutine(attackMonitorCoroutine);
-        attackMonitorCoroutine = StartCoroutine(EndAttackAfter(wait));
-    }
-
-    // call this from an Animation Event at the end of the attack clip (recommended)
-    public void EndAttack()
-    {
-        if (attackMonitorCoroutine != null)
-        {
-            StopCoroutine(attackMonitorCoroutine);
-            attackMonitorCoroutine = null;
-        }
-
-        if (attackUsesBool && animator != null)
-            animator.SetBool(attackBoolName, false);
-
-        isAttacking = false;
-        UnlockMovement();
-    }
-
-    private IEnumerator EndAttackAfter(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        EndAttack();
-    }
-
-    private IEnumerator WaitForAttackAnimationEnd(float timeout)
-    {
-        float t = 0f;
-        yield return null;
-        while (t < timeout)
-        {
-            if (!IsPlayingAttackClip())
-                break;
-            t += Time.deltaTime;
-            yield return null;
-        }
-        EndAttack();
-    }
-
-    private bool IsPlayingAttackClip()
-    {
-        if (animator == null || animator.runtimeAnimatorController == null) return false;
-        var clips = animator.GetCurrentAnimatorClipInfo(0);
-        if (clips == null || clips.Length == 0) return false;
-        var name = clips[0].clip.name.ToLower();
-        return name.Contains("attack") || name.Contains("sword");
-    }
-
-    // allow enabling/disabling attack at runtime
-    public void SetAttackEnabled(bool enabled)
-    {
-        attackEnabled = enabled;
-        if (!attackEnabled)
-        {
-            isAttacking = false;
-            if (attackUsesBool && animator != null)
-                animator.SetBool(attackBoolName, false);
-        }
-    }
-
-    public void LockMovement()
-    {
+    // --- optional: expose Rigidbody2D for external control (e.g. AI, events) ---
+    public Rigidbody2D Rigidbody => rb;
+     public void LockMovement()
+   {
         CanMove = false;
+        movementInput = Vector2.zero;
+        if (footstepSource != null && footstepSource.isPlaying) footstepSource.Stop();
+        if (animator != null) animator.SetBool(PARAM_IS_MOVING, false);
+        if (rb != null) SetRigidbodyLinearVelocity(rb, Vector2.zero);
+
     }
     public void UnlockMovement()
     {
         CanMove = true;
     }
 
-    private void OnDisable()
+    private void SetRigidbodyLinearVelocity(Rigidbody2D rigidbody, Vector2 velocity)
     {
-        // safety: ensure player not left permanently locked
-        EndAttack();
+        // Use reflection to access the private field 'm_Velocity'
+        FieldInfo velocityField = typeof(Rigidbody2D).GetField("m_Velocity", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (velocityField != null)
+        {
+            velocityField.SetValue(rigidbody, velocity);
+        }
+        else
+        {
+            Debug.LogWarning("Unable to access Rigidbody2D.m_Velocity field via reflection.");
+        }
     }
 }
