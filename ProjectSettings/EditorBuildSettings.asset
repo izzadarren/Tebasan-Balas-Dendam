@@ -38,6 +38,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Chapter1.unity
     guid: f0f5f8ad019d59a4b8be7225fe7bc85e
+  - enabled: 1
+    path: Assets/Scenes/CutsceneDesaBaru.unity
+    guid: 78e66be2e9aaeaa48a5fec8d974c9760
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   m_UseUCBPForAssetBundles: 0
