@@ -53,7 +53,33 @@ public class PlayerHealth : MonoBehaviour
     // Method ketika Player mati
     void Die()
     {
-        Debug.Log("Player Mati!");
+        Debug.Log("💀 Player Mati!");
+        
+        // Simpan posisi kematian
+        Vector3 deathPosition = transform.position;
+        
+        // Cari GameOverScreen di scene
+        GameOverScreen gameOverScreen = FindAnyObjectByType<GameOverScreen>();
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.ShowGameOver(deathPosition);
+        }
+        else
+        {
+            Debug.LogError("❌ GameOverScreen tidak ditemukan di scene!");
+        }
+        
+        // Disable player GameObject
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Reset health ke maksimal (dipanggil saat respawn)
+    /// </summary>
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+        Debug.Log("✅ Health di-reset ke maksimal!");
     }
 }
