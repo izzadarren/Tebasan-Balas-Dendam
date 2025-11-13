@@ -15,47 +15,71 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
-        }
+        currentHealth = maxHealth;
         UpdateHealthUI();
     }
 
-    public void TakeDamage(int amount)
+    // Method untuk menerima damage
+    public void TakeDamage(int damage)
     {
-        if (amount <= 0) return;
-        currentHealth -= amount;
+        currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        Debug.Log($"[PlayerHealth] Took {amount} damage. HP={currentHealth}/{maxHealth}");
         UpdateHealthUI();
 
         if (currentHealth <= 0)
-            Die();
-    }
-
-    // Compatibility method (some enemies call ApplyDamage)
-    public void ApplyDamage(int amount)
-    {
-        TakeDamage(amount);
-    }
-
-    private void UpdateHealthUI()
-    {
-        if (healthSlider != null) healthSlider.value = currentHealth;
-        if (healthBarFill != null)
         {
-            float t = (maxHealth > 0) ? (float)currentHealth / maxHealth : 0f;
-            healthBarFill.fillAmount = Mathf.Clamp01(t);
+            Die();
         }
     }
 
-    private void Die()
+    // Method untuk memperbarui tampilan Health Bar
+    void UpdateHealthUI()
     {
-        Debug.Log("[PlayerHealth] Player died.");
-        // simple default behaviour: disable GameObject (customize as needed)
+        float fillAmount = (float)currentHealth / maxHealth;
+
+        // Kalau pakai Slider
+        if (healthSlider != null)
+        {
+            healthSlider.value = fillAmount; // value slider dari 0 - 1
+        }
+
+        // Kalau masih mau pakai Image Fill (opsional)
+        if (healthBarFill != null)
+        {
+            healthBarFill.fillAmount = fillAmount; // gunakan fillAmount, bukan scale
+        }
+    }
+
+    // Method ketika Player mati
+    void Die()
+    {
+        Debug.Log("💀 Player Mati!");
+        
+        // Simpan posisi kematian
+        Vector3 deathPosition = transform.position;
+        
+        // Cari GameOverScreen di scene
+        GameOverScreen gameOverScreen = FindAnyObjectByType<GameOverScreen>();
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.ShowGameOver(deathPosition);
+        }
+        else
+        {
+            Debug.LogError("❌ GameOverScreen tidak ditemukan di scene!");
+        }
+        
+        // Disable player GameObject
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Reset health ke maksimal (dipanggil saat respawn)
+    /// </summary>
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+        Debug.Log("✅ Health di-reset ke maksimal!");
     }
 }
