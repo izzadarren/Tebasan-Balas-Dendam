@@ -15,45 +15,47 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
         UpdateHealthUI();
     }
 
-    // Method untuk menerima damage
-    public void TakeDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        currentHealth -= damage;
+        if (amount <= 0) return;
+        currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        Debug.Log($"[PlayerHealth] Took {amount} damage. HP={currentHealth}/{maxHealth}");
         UpdateHealthUI();
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
-    // Method untuk memperbarui tampilan Health Bar
-    void UpdateHealthUI()
+    // Compatibility method (some enemies call ApplyDamage)
+    public void ApplyDamage(int amount)
     {
-        float fillAmount = (float)currentHealth / maxHealth;
+        TakeDamage(amount);
+    }
 
-        // Kalau pakai Slider
-        if (healthSlider != null)
-        {
-            healthSlider.value = fillAmount; // value slider dari 0 - 1
-        }
-
-        // Kalau masih mau pakai Image Fill (opsional)
+    private void UpdateHealthUI()
+    {
+        if (healthSlider != null) healthSlider.value = currentHealth;
         if (healthBarFill != null)
         {
-            healthBarFill.fillAmount = fillAmount; // gunakan fillAmount, bukan scale
+            float t = (maxHealth > 0) ? (float)currentHealth / maxHealth : 0f;
+            healthBarFill.fillAmount = Mathf.Clamp01(t);
         }
     }
 
-    // Method ketika Player mati
-    void Die()
+    private void Die()
     {
-        Debug.Log("Player Mati!");
+        Debug.Log("[PlayerHealth] Player died.");
+        // simple default behaviour: disable GameObject (customize as needed)
         gameObject.SetActive(false);
     }
 }
