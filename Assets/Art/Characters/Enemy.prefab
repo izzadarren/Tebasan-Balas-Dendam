@@ -80,8 +80,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.19471906, y: 0.40353534}
-  m_Radius: 8.8870535
+  m_Offset: {x: -0.25, y: 0.17}
+  m_Radius: 0.6980026
 --- !u!1 &4453479919567347039
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 695542978693515010}
   - component: {fileID: 2440218728993321419}
   - component: {fileID: 7094842014360373539}
+  - component: {fileID: 3448155469244856277}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -113,7 +114,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.69, y: -6.22, z: 0}
-  m_LocalScale: {x: 0.06696494, y: 0.06696494, z: 0.06696494}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3489463741206800759}
@@ -166,7 +167,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -872610446680097618, guid: 0eab239ff4a5a314eb6936411808e819, type: 3}
+  m_Sprite: {fileID: -3179895698463889125, guid: a1587bf40afe6ee47bee415b8f510ddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -187,7 +188,7 @@ Animator:
   m_GameObject: {fileID: 4453479919567347039}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fb4c50f6b3ddc564e92fe76ae745660f, type: 2}
+  m_Controller: {fileID: 9100000, guid: be6a82e974c7b1241be0004e7f815155, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -212,6 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   health: 3
+  hitFlashDuration: 1
+  hitColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!50 &2440218728993321419
 Rigidbody2D:
   serializedVersion: 5
@@ -277,11 +280,35 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.8125, y: 17.4375}
+    oldSize: {x: 1.125, y: 1.4375}
     newSize: {x: 15.8125, y: 17.4375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 15.8125, y: 17.4375}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3448155469244856277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453479919567347039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd5d1c658965ac498c6fb718220e46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  moveSpeed: 1
+  chaseSpeed: 1
+  aggroRange: 5
+  stopDistance: 0.2
+  kinematicMovement: 1
+  paramMoveX: MoveX
+  paramMoveY: MoveY
+  paramIsMoving: IsMoving
+  paramMoveDir: MoveDir
+  paramDirection: Direction
+  autoFindPlayer: 1
+  playerTransform: {fileID: 0}
