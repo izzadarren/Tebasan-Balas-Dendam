@@ -376,7 +376,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 622940431}
         m_TargetAssemblyTypeName: ButtonBackCredit, Assembly-CSharp
-        m_MethodName: QuitGame
+        m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 622940428}
   - component: {fileID: 622940427}
   - component: {fileID: 622940431}
+  - component: {fileID: 622940432}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -670,9 +671,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff9782ea6a33794f84cc493651c5de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonBackCredit
+  backButton: {fileID: 0}
+  uiPanelToClose: {fileID: 0}
+  loadPreviousScene: 0
+  sceneNameToLoad: 
+--- !u!114 &622940432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622940426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e96a431f5b39ee478839e119fefe210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBackCredit
   backButton: {fileID: 244302148}
   uiPanelToClose: {fileID: 0}
-  loadPreviousScene: 1
+  loadPreviousScene: 0
   sceneNameToLoad: MainMenu1
 --- !u!1 &688344013
 GameObject:
